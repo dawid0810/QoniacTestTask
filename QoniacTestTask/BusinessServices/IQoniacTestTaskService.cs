@@ -6,6 +6,7 @@ namespace BusinessServices
     public interface IQoniacTestTaskService
     {
         [OperationContract]
+        [FaultContract(typeof(string))]
         string ParsePrice(string price);
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.ServiceModel.Web;
 using BusinessCommon;
 
 namespace BusinessServices
@@ -20,7 +22,7 @@ namespace BusinessServices
             }
             catch (Exception e)
             {
-                return e.Message;
+                throw new WebFaultException<string>(e.Message, HttpStatusCode.InternalServerError);
             }
         }
     }
