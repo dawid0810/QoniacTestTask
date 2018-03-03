@@ -1,5 +1,7 @@
 ﻿using System;
+using Autofac.Extras.Moq;
 using BusinessCommon;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -8,24 +10,38 @@ namespace UnitTests
     public class PriceParserTest
     {
         private PriceParser _parser;
+        private AutoMock _mock;
 
         [SetUp]
         public void Setup()
         {
-            _parser = new PriceParser();
+            _mock = AutoMock.GetStrict();
+            _mock.VerifyAll = true;
+            _parser = new PriceParser(_mock.Mock<INumberParser>().Object);
         }
 
-        [TestCase("0", "zero dollars")]
-        [TestCase("1", "one dollar")]
-        [TestCase("25,1", "twenty-five dollars and ten cents")]
-        [TestCase("125,1", "one hundred twenty-five dollars and ten cents")]
-        [TestCase("100", "one hundred dollars")]
-        [TestCase("0,01", "zero dollars and one cent")]
-        [TestCase("45 100", "forty-five thousand one hundred dollars")]
-        [TestCase("999 999 999,99", "nine hundred ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine dollars and ninety-nine cents")]
-        public void ParsesPrices(string price, string expectedResult)
+        [TearDown]
+        public void TearDown()
+        {
+            _mock.Dispose();
+        }
+
+        [TestCase("0", "zero dollars", "zero", "")]
+        [TestCase("1", "one dollar", "one", "")]
+        [TestCase("25,1", "twenty-five dollars and ten cents", "twenty-five", "ten")]
+        [TestCase("125,1", "one hundred twenty-five dollars and ten cents", "one hundred twenty-five", "ten")]
+        [TestCase("100", "one hundred dollars", "one hundred", "")]
+        [TestCase("0,01", "zero dollars and one cent", "zero", "one")]
+        [TestCase("45 100", "forty-five thousand one hundred dollars", "forty-five thousand one hundred", "")]
+        [TestCase("999 999 999,99",
+            "nine hundred ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine dollars and ninety-nine cents",
+            "nine hundred ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine",
+            "ninety-nine")]
+        public void ParsesPrices(string price, string expectedResult, string dollarString, string centsString)
         {
             // arrange
+            _mock.Mock<INumberParser>().SetupSequence(x => x.ConvertNumberToWords(It.IsAny<int>()))
+                .Returns(dollarString).Returns(centsString);
 
             //act
             var result = _parser.ConvertPriceToWords(price);

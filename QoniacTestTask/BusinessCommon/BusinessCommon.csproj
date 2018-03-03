@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INumberParser.cs" />
     <Compile Include="IPriceParser.cs" />
     <Compile Include="PriceParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
