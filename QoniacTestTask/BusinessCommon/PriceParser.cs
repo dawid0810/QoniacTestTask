@@ -18,7 +18,7 @@ namespace BusinessCommon
         {
             if (!IsPrice(priceString))
             {
-                throw new ArgumentOutOfRangeException(nameof(priceString), "Given string is not in correct format");
+                throw new ArgumentException("Given string is not in correct format");
             }
 
             var price = decimal.Parse(priceString, new CultureInfo("pl"));

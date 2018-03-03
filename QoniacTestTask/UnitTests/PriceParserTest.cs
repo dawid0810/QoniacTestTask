@@ -58,7 +58,19 @@ namespace UnitTests
         [TestCase("12,34a")]
         public void ThrowsArgumentOutOfRangeException_WrongStringFormat(string priceString)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => _parser.ConvertPriceToWords(priceString));
+            Assert.Throws<ArgumentException>(() => _parser.ConvertPriceToWords(priceString));
+        }
+
+        [Test]
+        public void ThrowsNumberParserExceptions()
+        {
+            //arrange
+            _mock.Mock<INumberParser>().Setup(x => x.ConvertNumberToWords(It.IsAny<int>())).Throws(new Exception());
+
+            //act
+
+            //assert
+            Assert.Throws<Exception>(() => _parser.ConvertPriceToWords("1"));
         }
     }
 }
