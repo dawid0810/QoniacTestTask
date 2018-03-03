@@ -33,6 +33,7 @@ namespace UnitTests
         [TestCase("100", "one hundred dollars", "one hundred", "")]
         [TestCase("0,01", "zero dollars and one cent", "zero", "one")]
         [TestCase("45 100", "forty-five thousand one hundred dollars", "forty-five thousand one hundred", "")]
+        [TestCase("45100", "forty-five thousand one hundred dollars", "forty-five thousand one hundred", "")]
         [TestCase("999 999 999,99",
             "nine hundred ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine dollars and ninety-nine cents",
             "nine hundred ninety-nine million nine hundred ninety-nine thousand nine hundred ninety-nine",

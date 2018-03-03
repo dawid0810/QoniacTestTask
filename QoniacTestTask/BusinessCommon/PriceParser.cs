@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -20,7 +21,7 @@ namespace BusinessCommon
                 throw new ArgumentOutOfRangeException(nameof(priceString), "Given string is not in correct format");
             }
 
-            var price = decimal.Parse(priceString);
+            var price = decimal.Parse(priceString, new CultureInfo("pl"));
 
             var dollars = (int)price;
             var cents = (int)((price - dollars) * 100);

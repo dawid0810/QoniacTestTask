@@ -13,6 +13,7 @@ namespace QoniacTestTaskService
             builder.RegisterType<BusinessServices.QoniacTestTaskService>().As<IQoniacTestTaskService>();
 
             builder.RegisterType<PriceParser>().As<IPriceParser>();
+            builder.RegisterType<NumberParser>().As<INumberParser>();
 
             return builder.Build();
         }
